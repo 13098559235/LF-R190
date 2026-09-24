@@ -53,8 +53,6 @@ jobs:
         run: |
           cd openwrt
           [ -e ${{ github.workspace }}/${{ env.DIY_P2_SH }} ] && bash ${{ github.workspace }}/${{ env.DIY_P2_SH }}
-          cp ${{ github.workspace }}/${{ env.CONFIG_FILE }} .config
-          echo "DEVICE_TARGET=ramips/mt7620;LF-R190" >> .config
           ./scripts/feeds install -a
           make defconfig
 
@@ -62,13 +60,6 @@ jobs:
         run: |
           cd openwrt
           make -j$(nproc) V=s
-
-      - name: Upload bin directory
-        uses: actions/upload-artifact@main
-        if: env.UPLOAD_BIN_DIR == 'true'
-        with:
-          name: OpenWrt_bin
-          path: openwrt/bin
 
       - name: Upload firmware to artifact
         uses: actions/upload-artifact@main
