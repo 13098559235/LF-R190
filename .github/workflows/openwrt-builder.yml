@@ -1,5 +1,8 @@
 name: Build OpenWrt
 
+permissions:
+  contents: write
+
 on:
   workflow_dispatch:
   repository_dispatch:
@@ -9,13 +12,12 @@ on:
 
 env:
   REPO_BRANCH: openwrt-23.05
-  FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
-  UPLOAD_RELEASE: true
+  UPLOAD_RELEASE: false
   TZ: Asia/Shanghai
 
 jobs:
@@ -74,13 +76,3 @@ jobs:
         with:
           name: OpenWrt_firmware
           path: openwrt/bin/targets/*/*/*.bin
-
-      - name: Upload firmware to Release
-        uses: softprops/action-gh-release@master
-        if: env.UPLOAD_RELEASE == 'true'
-        with:
-          tag_name: OpenWrt_firmware
-          name: OpenWrt Firmware
-          files: openwrt/bin/targets/*/*/*.bin
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
