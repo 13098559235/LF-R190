@@ -45,7 +45,6 @@ jobs:
         run: |
           cd openwrt
           [ -e ${{ github.workspace }}/${{ env.DIY_P1_SH }} ] && bash ${{ github.workspace }}/${{ env.DIY_P1_SH }}
-          cat ${{ github.workspace }}/${{ env.FEEDS_CONF }} >> feeds.conf.default
           ./scripts/feeds update -a
 
       - name: Load custom configuration
